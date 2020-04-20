@@ -1,12 +1,6 @@
-# Project 0
+# Scotty Thoms Project 0
 
-For Project 0, you will be building a RESTful API using TypeScript and Express. Associates are allowed to come up with their own API idea, but it must be approved by the trainer; suggested ideas are provided below.
-
-Suggestions: 
-- resource management system API
-- learning management system API
-- any kind of social media API
-- mobile banking application API
+For Project 0, I will be building a RESTful API using TypeScript and Express. I will be implementing a Banking API
 
 ## Features
 - [ ] RESTful API (At least Level 2 of the [Richardson Maturity Model](https://martinfowler.com/articles/richardsonMaturityModel.html))
