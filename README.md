@@ -22,6 +22,7 @@ For Project 0, I will be building a RESTful API using TypeScript and Express. I 
 - [ ] 5 minute live demonstration of endpoint consumption using Postman
 
 ## Entities
-- [ ] User
-- [ ] Account
-- [ ] Transaction
+- [ ] User { id, first name, last name, usernname, password, role }
+- [ ] Account { id, balance, type, ownerId }
+- [ ] Transaction { id, amount, description, accountId }
+
