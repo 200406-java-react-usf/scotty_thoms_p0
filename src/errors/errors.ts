@@ -11,6 +11,7 @@ class ApplicationError {
     setMessage(message: string) {
         this.message = message;
     }
+
 }
 
 class WipError extends ApplicationError {
@@ -29,7 +30,17 @@ class ResourceNotFoundError extends ApplicationError {
     }
 }
 
+class BadRequestError extends ApplicationError {
+
+    constructor(reason?: string) {
+        super(reason);
+        super.setMessage('Bad request. Invalid parameters entered.');
+        
+    }
+}
+
 export {
     WipError,
-    ResourceNotFoundError
+    ResourceNotFoundError,
+    BadRequestError
 }
