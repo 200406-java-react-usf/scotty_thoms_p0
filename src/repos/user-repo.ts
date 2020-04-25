@@ -4,7 +4,8 @@ import { CrudRepository } from './crud-repo';
 import Validator from '../util/validator';
 import {
     WipError,
-    ResourceNotFoundError
+    ResourceNotFoundError,
+    BadRequestError
 } from '../errors/errors';
 
 export class UserRepository implements CrudRepository<User> {
@@ -27,7 +28,7 @@ export class UserRepository implements CrudRepository<User> {
                     users.push({...user});
                 }
                 if(users.length === 0){
-                    reject(new ResourceNotFoundError());
+                    reject(new ResourceNotFoundError('No users found'));
                 }
     
                 resolve(users.map(this.removePassword));
@@ -38,8 +39,23 @@ export class UserRepository implements CrudRepository<User> {
 
     getById(id: number): Promise<User> {
         return new Promise((resolve, reject) => {
-            reject(new WipError());
-        })
+            
+            if (!Validator.isValidId(id)) {
+                reject(new BadRequestError());
+            }
+
+            setTimeout(() => {
+                const user = {...data.find(user => user.id === id)};
+
+                if (Object.keys(user).length === 0){
+                    reject(new ResourceNotFoundError('ID does not exist'));
+                    return;
+                }
+
+                resolve(this.removePassword(user));
+
+            }, 1000);
+        });
 
     }
 
