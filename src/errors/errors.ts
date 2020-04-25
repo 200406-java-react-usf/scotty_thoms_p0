@@ -13,10 +13,14 @@ class ApplicationError {
     }
 }
 
-class WorkInProgressError extends ApplicationError {
+class WipError extends ApplicationError {
 
     constructor(reason?: string) {
         super(reason);
         super.setMessage('Not implemented yet. Work in progress.');
     }
+}
+
+export {
+    WipError
 }
