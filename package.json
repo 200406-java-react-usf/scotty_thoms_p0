@@ -4,7 +4,9 @@
   "description": "a RESTful Banking API using TypeScript and Express",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "start": "tsc && node ./build/index.js",
+    "test": "jest",
+    "coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
