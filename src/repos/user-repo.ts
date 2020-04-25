@@ -3,7 +3,8 @@ import { User } from '../models/user';
 import { CrudRepository } from './crud-repo';
 import Validator from '../util/validator';
 import {
-    WipError
+    WipError,
+    ResourceNotFoundError
 } from '../errors/errors';
 
 export class UserRepository implements CrudRepository<User> {
@@ -18,8 +19,21 @@ export class UserRepository implements CrudRepository<User> {
     
     getAll(): Promise<User[]> {
         return new Promise((resolve, reject) => {
-            reject(new WipError());
-        })
+
+            setTimeout( () => {
+                let users = [];
+
+                for(let user of data){
+                    users.push({...user});
+                }
+                if(users.length === 0){
+                    reject(new ResourceNotFoundError());
+                }
+    
+                resolve(users.map(this.removePassword));
+            }, 1000);
+           
+        });
     }
 
     getById(id: number): Promise<User> {
@@ -42,5 +56,10 @@ export class UserRepository implements CrudRepository<User> {
         })
 
     }
+    
+    private removePassword(user: User): User {
+        let u = {...user};
+        delete u.password;
+        return u;
+    }
 }
-
