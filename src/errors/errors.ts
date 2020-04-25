@@ -21,6 +21,15 @@ class WipError extends ApplicationError {
     }
 }
 
+class ResourceNotFoundError extends ApplicationError {
+
+    constructor(reason?: string) {
+        super(reason);
+        super.setMessage('Resource not found.');
+    }
+}
+
 export {
-    WipError
+    WipError,
+    ResourceNotFoundError
 }
