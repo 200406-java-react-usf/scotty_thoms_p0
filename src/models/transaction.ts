@@ -1,4 +1,4 @@
-export class transaction {
+export class Transaction {
 
     id: number;
     amount: number;
