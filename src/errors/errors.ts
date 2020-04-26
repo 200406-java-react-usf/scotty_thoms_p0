@@ -39,8 +39,17 @@ class BadRequestError extends ApplicationError {
     }
 }
 
+class InsuficentFundsError extends ApplicationError {
+
+    constructor(reason?: string) {
+        super(reason);
+        super.setMessage('You do not have enough funds for this transaction.');
+    }
+}
+
 export {
     WipError,
     ResourceNotFoundError,
-    BadRequestError
+    BadRequestError,
+    InsuficentFundsError
 }
