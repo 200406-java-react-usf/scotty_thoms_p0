@@ -15,16 +15,16 @@ import { mapUserResultSet } from '../util/result-set-mapper';
 export class UserRepository implements CrudRepository<User> {
 
     baseQuery = `
-        select
-            u.id,
-            u.username,
-            u.password,
-            u.first_name,
-            u.last_name,
-            ur.name as role_id
-        from users u
-        join user_roles ur
-        on u.role_id = u.id
+    select
+        u.id,
+        u.username,
+        u.password,
+        u.first_name,
+        u.last_name,
+        ur.name as role_id
+    from users u
+    join user_roles ur
+    on u.role_id = ur.id
     `;
     
     async getAll(): Promise<User[]> {
@@ -32,7 +32,7 @@ export class UserRepository implements CrudRepository<User> {
             let client: PoolClient;
             try { 
                 client = await connectionPool.connect();
-                let sql = `${this.baseQuery}`;
+                let sql = `${this.baseQuery} order by u.id`;
                 let rs = await client.query(sql);
                 return rs.rows;
 
