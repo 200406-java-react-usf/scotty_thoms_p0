@@ -47,9 +47,18 @@ class InsuficentFundsError extends ApplicationError {
     }
 }
 
+class InternalServerError extends ApplicationError {
+
+    constructor(reason?: string) {
+        super(reason);
+        super.setMessage('Internal Server Error.');
+    }
+}
+
 export {
     WipError,
     ResourceNotFoundError,
     BadRequestError,
-    InsuficentFundsError
+    InsuficentFundsError,
+    InternalServerError
 }
