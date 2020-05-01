@@ -11,9 +11,9 @@ const userService = AppConfig.userService;
 UserRouter.get('', async (req, resp) => {
     try{
         let payload = await userService.getAllUsers();
-        resp.status(200).json(payload).send();
+        resp.status(200).json(payload);
     } catch (e){
-        resp.status(404).json(e).send();
+        resp.status(404).json(e);
     }
 });
 
