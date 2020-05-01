@@ -5,71 +5,89 @@ import Validator from '../util/validator';
 import {
     WipError,
     ResourceNotFoundError,
-    BadRequestError
+    BadRequestError,
+    InternalServerError
 } from '../errors/errors';
+import { PoolClient } from 'pg';
+import { connectionPool } from '..';
+import { mapUserResultSet } from '../util/result-set-mapper';
 
 export class UserRepository implements CrudRepository<User> {
 
-    private static instance: UserRepository;
-
-    private constructor() {};
-
-    static getInstance() {
-        return !UserRepository.instance ? UserRepository.instance = new UserRepository() : UserRepository.instance;
-    }
+    baseQuery = `
+        select
+            u.id,
+            u.username,
+            u.password,
+            u.first_name,
+            u.last_name,
+            ur.name as role_id
+        from users u
+        join user_roles ur
+        on u.role_id = u.id
+    `;
     
-    getAll(): Promise<User[]> {
-        return new Promise((resolve, reject) => {
+    async getAll(): Promise<User[]> {
 
-            setTimeout( () => {
-                let users = [];
+            let client: PoolClient;
+            try { 
+                client = await connectionPool.connect();
+                let sql = `${this.baseQuery}`;
+                let rs = await client.query(sql);
+                return rs.rows;
 
-                for(let user of data){
-                    users.push({...user});
-                }
-                if(users.length === 0){
-                    reject(new ResourceNotFoundError('No users found'));
-                }
-    
-                resolve(users.map(this.removePassword));
-            }, 1000);
+            } catch (e) {
+                throw new InternalServerError();
+            } finally {
+                client && client.release();
+            }
            
-        });
+        };
+
+    async getById(id: number): Promise<User> {
+        
+        let client: PoolClient;
+        try {
+            client = await connectionPool.connect();
+            let sql = `${this.baseQuery} where u.id = $1`;
+            let rs = await client.query(sql, [id]);
+            return mapUserResultSet(rs.rows[0]);
+        } catch (e) {
+            throw new InternalServerError();
+        } finally {
+            client && client.release();
+        }
+
     }
 
-    getById(id: number): Promise<User> {
-        return new Promise((resolve, reject) => {
-            
-            if (!Validator.isValidId(id)) {
-                reject(new BadRequestError());
+    async save(newUser: User): Promise<User> {
+        let client: PoolClient;
+            try { 
+                client = await connectionPool.connect();
+                let sql = `${this.baseQuery}`;
+                let rs = await client.query(sql);
+                return mapUserResultSet(rs.rows[0]);
+
+            } catch (e) {
+                throw new InternalServerError();
+            } finally {
+                client && client.release();
             }
 
-            setTimeout(() => {
-                const user = {...data.find(user => user.id === id)};
-
-                if (Object.keys(user).length === 0){
-                    reject(new ResourceNotFoundError('ID does not exist'));
-                    return;
-                }
-
-                resolve(this.removePassword(user));
-
-            }, 1000);
-        });
-
     }
 
-    save(newUser: User): Promise<User> {
-        return new Promise((resolve, reject) => {
-            reject(new WipError());
-        })
-
-    }
-
-    update(updatedUser: User): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            reject(new WipError());
-        })
+    async update(updatedUser: User): Promise<boolean> {
+        let client: PoolClient;
+            try { 
+                client = await connectionPool.connect();
+                let sql = `${this.baseQuery}`;
+                let rs = await client.query(sql);
+                return true;
+            } catch (e) {
+                throw new InternalServerError();
+            } finally {
+                client && client.release();
+            }
 
     }
     
