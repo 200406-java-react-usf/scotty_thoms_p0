@@ -91,9 +91,4 @@ export class UserRepository implements CrudRepository<User> {
 
     }
     
-    private removePassword(user: User): User {
-        let u = {...user};
-        delete u.password;
-        return u;
-    }
 }
