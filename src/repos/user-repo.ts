@@ -61,6 +61,7 @@ export class UserRepository implements CrudRepository<User> {
     }
 
     async save(newUser: User): Promise<User> {
+        //WIP!
         let client: PoolClient;
             try { 
                 client = await connectionPool.connect();
@@ -77,6 +78,7 @@ export class UserRepository implements CrudRepository<User> {
     }
 
     async update(updatedUser: User): Promise<boolean> {
+        //WIP!
         let client: PoolClient;
             try { 
                 client = await connectionPool.connect();
