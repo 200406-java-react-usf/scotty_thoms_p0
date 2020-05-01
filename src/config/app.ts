@@ -7,7 +7,7 @@ const userRepo = new UserRepository();
 const userService = new UserService(userRepo);
 
 const accountRepo = new AccountRepository();
-const accountService = new accountService(accountRepo);
+const accountService = new AccountService(accountRepo);
 
 export default {
     userService,
