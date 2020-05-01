@@ -26,3 +26,5 @@ For Project 0, I will be building a RESTful API using TypeScript and Express. I 
 - [ ] Account { id, balance, type, ownerId }
 - [ ] Transaction { id, amount, description, accountId }
 
+## Entity Relationship Diagram
+![ERD](https://github.com/200406-java-react-usf/scotty_thoms_p0/blob/master/scotty_thoms_p0%20ERD.png)
