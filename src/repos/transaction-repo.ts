@@ -1,15 +1,9 @@
-import data from '../data/transaction-db';
 import { Transaction } from '../models/transaction';
 import { CrudRepository } from './crud-repo';
-import Validator from '../util/validator';
 import {
-    WipError,
-    ResourceNotFoundError,
-    BadRequestError,
-    InsuficentFundsError,
     InternalServerError
 } from '../errors/errors';
-import { PoolClient, Pool } from 'pg';
+import { PoolClient } from 'pg';
 import { connectionPool } from '..';
 import { mapTransactionResultSet } from '../util/result-set-mapper';
 
