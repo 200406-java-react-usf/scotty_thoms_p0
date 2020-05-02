@@ -1,7 +1,5 @@
 import express from 'express';
 import AppConfig from '../config/app';
-import { User } from '../models/user';
-import { UserRepository } from '../repos/user-repo';
 
 export const UserRouter = express.Router();
 
