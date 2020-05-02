@@ -3,6 +3,7 @@ import AppConfig from '../config/app';
 import { adminGuard } from '../middleware/auth-middlware';
 import { isEmptyObject } from '../util/validator';
 import { ParsedUrlQuery } from 'querystring';
+import { User } from '../models/user';
 
 export const UserRouter = express.Router();
 
@@ -26,5 +27,14 @@ UserRouter.get('/:id', async (req, resp) => {
         resp.status(200).json(payload);
     } catch (e) {
         resp.status(404).json(e);
+    }
+});
+
+UserRouter.post('/new', async (req, resp) => {
+    try {
+        let newUser = await userService.addNewUser(req.body);
+        return resp.status(201).json(newUser);
+    } catch (e) {
+        return resp.status(e.statusCode || 500).json(e);
     }
 })
