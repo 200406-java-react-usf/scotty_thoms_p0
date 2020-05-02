@@ -1,6 +1,7 @@
 import { User } from "../models/user";
-import { UserSchema, AccountSchema } from "./schemas";
+import { UserSchema, AccountSchema, TransactoinSchema } from "./schemas";
 import { Account } from "../models/account";
+import { Transaction } from "../models/transaction";
 
 export function mapUserResultSet(resultSet: UserSchema): User {
 
@@ -30,4 +31,18 @@ export function mapAccountResultSet(resultSet: AccountSchema): Account {
         resultSet.account_type,
         resultSet.owner_id
     );
+}
+
+export function mapTransactionResultSet(resultSet: TransactoinSchema): Transaction {
+
+    if (!resultSet) {
+        return {} as Transaction;
+    }
+
+    return new Transaction (
+        resultSet.id,
+        resultSet.amount,
+        resultSet.description,
+        resultSet.account_id
+    )
 }

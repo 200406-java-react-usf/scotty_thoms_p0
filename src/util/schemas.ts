@@ -13,3 +13,10 @@ export interface AccountSchema {
     account_type: string,
     owner_id: number
 }
+
+export interface TransactoinSchema {
+    id: number,
+    amount: number,
+    description: string,
+    account_id: number
+}
