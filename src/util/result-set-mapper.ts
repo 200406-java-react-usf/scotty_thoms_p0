@@ -1,5 +1,6 @@
 import { User } from "../models/user";
-import { UserSchema } from "./schemas";
+import { UserSchema, AccountSchema } from "./schemas";
+import { Account } from "../models/account";
 
 export function mapUserResultSet(resultSet: UserSchema): User {
 
@@ -15,4 +16,18 @@ export function mapUserResultSet(resultSet: UserSchema): User {
 		resultSet.last_name,
 		resultSet.role_name
 	);
+}
+
+export function mapAccountResultSet(resultSet: AccountSchema): Account {
+    
+    if (!resultSet) {
+        return {} as Account;
+    }
+
+    return new Account (
+        resultSet.id,
+        resultSet.balance,
+        resultSet.type,
+        resultSet.owner_id
+    );
 }
