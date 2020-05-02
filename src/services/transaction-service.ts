@@ -8,7 +8,7 @@ export class TransactionService {
         this.transactionRepo = transactionRepo;
     }
 
-    async getAllTransaction(): Promise<Transaction[]> {
+    async getAllTransactions(): Promise<Transaction[]> {
         try {
             let transactions = await this.transactionRepo.getAll();
 
