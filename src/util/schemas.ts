@@ -4,12 +4,12 @@ export interface UserSchema {
 	password: string,
 	first_name: string,
 	last_name: string,
-	role_name: string
+	role_id: string
 }
 
 export interface AccountSchema {
     id: number,
     balance: number,
-    type: string,
+    account_type: string,
     owner_id: number
 }
