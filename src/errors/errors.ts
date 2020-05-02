@@ -22,6 +22,13 @@ class WipError extends ApplicationError {
     }
 }
 
+class AuthError extends ApplicationError {
+    constructor(reason?: string) {
+        super(reason);
+        super.setMessage('Authentication failed.');
+    }
+}
+
 class ResourceNotFoundError extends ApplicationError {
 
     constructor(reason?: string) {
@@ -60,5 +67,6 @@ export {
     ResourceNotFoundError,
     BadRequestError,
     InsuficentFundsError,
-    InternalServerError
+    InternalServerError,
+    AuthError
 }
