@@ -46,7 +46,7 @@ export class UserService {
                 throw new BadRequestError();
             }
 
-            let user = await this.getUserByCredentials(un,pw);
+            let user = await this.userRepo.getbyCredentials(un,pw);
 
             if (isEmptyObject(user)) {
                 throw new AuthError();
