@@ -14,11 +14,13 @@ AuthRouter.get('', async (req,resp) => {
 AuthRouter.post('', async (req, resp) => {
     try {
         const { username, password } = req.body;
-        let authUser = await userService.getUserByCredentials(username, password);
+        let authUser = await userService.authenticateUser(username, password);
         let payload = new Principal(authUser.id, authUser.username, authUser.role);
         req.session.principal = payload;
         resp.status(200).json(payload);
     } catch (e) {
-        resp.status(e.statusCode).json(e);
+        resp.status(e.statusCode || 500).json(e);
     }
-})
+
+    resp.send();
+});
