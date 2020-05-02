@@ -6,66 +6,80 @@ import {
     WipError,
     ResourceNotFoundError,
     BadRequestError,
-    InsuficentFundsError
+    InsuficentFundsError,
+    InternalServerError
 } from '../errors/errors';
+import { PoolClient, Pool } from 'pg';
+import { connectionPool } from '..';
+import { mapTransactionResultSet } from '../util/result-set-mapper';
 
 export class TransactionRepository implements CrudRepository<Transaction> {
     
-    private static instance: TransactionRepository;
-
-    private constructor() {};
-
-    static getInstance() {
-        return !TransactionRepository.instance ? TransactionRepository.instance = new TransactionRepository() : TransactionRepository.instance;
-    }
+    baseQuery = `
+    select
+        t.id,
+        t.amount,
+        t.description,
+        t.account_id
+    from transactions t
+    `
     
-    getAll(): Promise<Transaction[]> {
-        return new Promise((resolve, reject) => {
-
-            setTimeout( () => {
-                let allTransactions = [];
-
-                for(let transaction of data){
-                    allTransactions.push({...transaction});
-                }
-                if(allTransactions.length === 0){
-                    reject(new ResourceNotFoundError('No users found'));
-                }
     
-                resolve(allTransactions);
-            }, 1000);
-           
-        });
+    async getAll(): Promise<Transaction[]> {
+        let client: PoolClient;
+        try {
+            client = await connectionPool.connect();
+            let sql = `${this.baseQuery} order by t.id`;
+            let rs = await client.query(sql);
+            return rs.rows;
+        } catch (e) {
+            throw new InternalServerError();
+        } finally {
+            client && client.release();
+        }
     };
 
-    getById(id: number): Promise<Transaction> {
-        return new Promise((resolve, reject) => {
-            if (!Validator.isValidId(id)) {
-                reject(new BadRequestError());
-            }
-
-            setTimeout(() => {
-                const transaction = {...data.find(transaction => transaction.id === id)};
-
-                if (Object.keys(transaction).length === 0){
-                    reject(new ResourceNotFoundError());
-                    return;
-                }
-
-                resolve(transaction);
-            }, 1000);
-        });
+    async getById(id: number): Promise<Transaction> {
+        let client: PoolClient;
+        try {
+            client = await connectionPool.connect();
+            let sql = `${this.baseQuery} where t.id = $1`;
+            let rs = await client.query(sql, [id]);
+            return mapTransactionResultSet(rs.rows[0]);
+        } catch (e) {
+            throw new InternalServerError();
+        } finally {
+            client && client.release();
+        }
     }
 
-    save(newTransaction: Transaction): Promise<Transaction> {
-        return new Promise((resolve, reject) => {
-            reject(new WipError());
-        });
+    async save(newTransaction: Transaction): Promise<Transaction> {
+        //WIP
+        let client: PoolClient;
+        try {
+            client = await connectionPool.connect();
+            let sql = `${this.baseQuery}`;
+            let rs = await client.query(sql);
+            return mapTransactionResultSet(rs.rows[0]);
+        } catch (e) {
+            throw new InternalServerError();
+        } finally {
+            client && client.release();
+        }
     }
 
-    update(updatedTransaction: Transaction): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            reject(new WipError());
-        });
+    async update(updatedTransaction: Transaction): Promise<boolean> {
+        //WIP
+        let client: PoolClient;
+        try {
+            client = await connectionPool.connect();
+            let sql = `${this.baseQuery}`;
+            let rs = await client.query(sql);
+            return true;
+        } catch (e) {
+            throw new InternalServerError();
+        } finally {
+            client && client.release();
+        }
     }
 }
