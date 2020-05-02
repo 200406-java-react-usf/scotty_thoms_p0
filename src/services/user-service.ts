@@ -1,5 +1,5 @@
 import { UserRepository } from "../repos/user-repo";
-import { ResourceNotFoundError, BadRequestError, AuthError, } from "../errors/errors";
+import { ResourceNotFoundError, BadRequestError, AuthError, UsernameNotAvailableError, } from "../errors/errors";
 import { isValidId, isEmptyObject, isValidStrings } from '../util/validator';
 import { User } from "../models/user";
 
@@ -57,6 +57,26 @@ export class UserService {
             throw e;
         }
     }
+
+    async addNewUser(newUser: User): Promise<User> {
+        try {
+            let isAvailable = await this.userRepo.checkUsername(newUser.username);
+
+            if (!isAvailable) {
+                throw new UsernameNotAvailableError();
+            }
+            newUser.role = 'User';
+            console.log(newUser);
+            const persistedUser = await this.userRepo.save(newUser);
+
+            return this.removePassword(persistedUser);
+
+        } catch (e) {
+            throw e;
+        }
+    }
+
+    
 
     private removePassword(user: User): User {
         if(!user || !user.password) return user;
