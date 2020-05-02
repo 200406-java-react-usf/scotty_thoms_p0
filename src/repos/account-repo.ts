@@ -1,17 +1,11 @@
-import data from '../data/account-db';
 import { Account } from '../models/account';
 import { CrudRepository } from './crud-repo';
-import Validator from '../util/validator';
 import {
-    WipError,
-    ResourceNotFoundError,
-    BadRequestError,
     InternalServerError
 } from '../errors/errors';
 import { PoolClient } from 'pg';
 import { connectionPool } from '..';
-import { mapUserResultSet } from '../util/result-set-mapper';
-import { mapAccountResultSet } from '../util/account-set-mapper';
+import { mapAccountResultSet } from '../util/result-set-mapper';
 
 export class AccountRepository implements CrudRepository<Account> {
     
@@ -19,7 +13,7 @@ export class AccountRepository implements CrudRepository<Account> {
     select
         a.id,
         a.balance,
-        a.type,
+        a.account_type,
         a.owner_id
     from accounts a
     `
