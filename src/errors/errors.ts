@@ -62,11 +62,20 @@ class InternalServerError extends ApplicationError {
     }
 }
 
+class UsernameNotAvailableError extends ApplicationError {
+
+    constructor(reason?: string) {
+        super(reason);
+        super.setMessage('Username not available.');
+    }
+}
+
 export {
     WipError,
     ResourceNotFoundError,
     BadRequestError,
     InsuficentFundsError,
     InternalServerError,
-    AuthError
+    AuthError,
+    UsernameNotAvailableError
 }
