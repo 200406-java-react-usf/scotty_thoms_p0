@@ -40,19 +40,19 @@ export class UserService {
         }
     }
 
-    async getUserByCredentials(un: string, pw: string): Promise<User> {
+    async authenticateUser(un: string, pw: string): Promise<User> {
         try {
             if (!isValidStrings(un,pw)) {
                 throw new BadRequestError();
             }
 
-            let user = await this.userRepo.getbyCredentials(un,pw);
+            let authUser: User = await this.userRepo.getbyCredentials(un,pw);
 
-            if (isEmptyObject(user)) {
+            if (isEmptyObject(authUser)) {
                 throw new AuthError();
             }
 
-            return this.removePassword(user);
+            return this.removePassword(authUser);
         } catch (e) {
             throw e;
         }
