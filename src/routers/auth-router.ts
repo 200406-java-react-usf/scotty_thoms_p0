@@ -11,6 +11,7 @@ AuthRouter.get('', async (req,resp) => {
     resp.status(204).send();
 })
 
+
 AuthRouter.post('', async (req, resp) => {
     try {
         const { username, password } = req.body;
