@@ -1,6 +1,6 @@
 import { UserRepository } from "../repos/user-repo";
-import { ResourceNotFoundError, BadRequestError, } from "../errors/errors";
-import { isValidId, isEmptyObject } from '../util/validator';
+import { ResourceNotFoundError, BadRequestError, AuthError, } from "../errors/errors";
+import { isValidId, isEmptyObject, isValidStrings } from '../util/validator';
 import { User } from "../models/user";
 
 export class UserService {
@@ -32,6 +32,24 @@ export class UserService {
 
             if (isEmptyObject(user)) {
                 throw new ResourceNotFoundError();
+            }
+
+            return this.removePassword(user);
+        } catch (e) {
+            throw e;
+        }
+    }
+
+    async getUserByCredentials(un: string, pw: string): Promise<User> {
+        try {
+            if (!isValidStrings(un,pw)) {
+                throw new BadRequestError();
+            }
+
+            let user = await this.getUserByCredentials(un,pw);
+
+            if (isEmptyObject(user)) {
+                throw new AuthError();
             }
 
             return this.removePassword(user);
