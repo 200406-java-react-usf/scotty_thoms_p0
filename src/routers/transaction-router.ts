@@ -1,11 +1,12 @@
 import express from 'express';
 import AppConfig from '../config/app';
+import { adminGuard } from '../middleware/auth-middlware';
 
 export const TransactionRouter = express.Router();
 
 const transactionService = AppConfig.transactionService;
 
-TransactionRouter.get('/', async (req, resp) => {
+TransactionRouter.get('/', adminGuard, async (req, resp) => {
     try{
         let payload = await transactionService.getAllTransactions();
         resp.status(200).json(payload);
