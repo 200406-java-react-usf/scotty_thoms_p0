@@ -14,8 +14,7 @@ export function mapUserResultSet(resultSet: UserSchema): User {
 		resultSet.password,
 		resultSet.first_name,
 		resultSet.last_name,
-        resultSet.role_name
-        
+        resultSet.role_id
 	);
 }
 
@@ -28,7 +27,7 @@ export function mapAccountResultSet(resultSet: AccountSchema): Account {
     return new Account (
         resultSet.id,
         resultSet.balance,
-        resultSet.type,
+        resultSet.account_type,
         resultSet.owner_id
     );
 }
