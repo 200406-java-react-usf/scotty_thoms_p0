@@ -48,16 +48,22 @@ export class AccountRepository implements CrudRepository<Account> {
             }
     }
 
-    async save(newTransaction: Account): Promise<Account> {
-        //WIP!
+    async save(newAccount: Account): Promise<Account> {
         let client: PoolClient;
             try { 
                 client = await connectionPool.connect();
-                let sql = `${this.baseQuery}`;
-                let rs = await client.query(sql);
-                return mapAccountResultSet(rs.rows[0]);
+                let sql = `
+                    insert into accounts (balance, account_type, owner_id) values
+                    ($1, $2, $3) returning id
+                `
+                
+                let rs = await client.query(sql, [newAccount.balance, newAccount.type, newAccount.ownerId]);
+                newAccount.id = rs.rows[0].id;
+
+                return newAccount;
 
             } catch (e) {
+                console.log(e);
                 throw new InternalServerError();
             } finally {
                 client && client.release();
@@ -78,5 +84,25 @@ export class AccountRepository implements CrudRepository<Account> {
             } finally {
                 client && client.release();
             }
+    }
+
+    async checkOwnerId(id: number): Promise<boolean> {
+        //WIP!
+        let client: PoolClient;
+        try {
+            client = await connectionPool.connect();
+            let sql = `select * from users u where id = ${id}`;
+            let rs = await client.query(sql);
+            console.log(rs);
+            if (!rs.rows[0]) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (e) {
+            throw e;
+        } finally {
+            client && client.release();
+        }
     }
 }
