@@ -1,9 +1,6 @@
 import express from 'express';
 import AppConfig from '../config/app';
 import { adminGuard } from '../middleware/auth-middlware';
-import { isEmptyObject } from '../util/validator';
-import { ParsedUrlQuery } from 'querystring';
-import { User } from '../models/user';
 
 export const UserRouter = express.Router();
 
@@ -31,6 +28,7 @@ UserRouter.get('/:id', async (req, resp) => {
 });
 
 UserRouter.post('/new', async (req, resp) => {
+    
     try {
         let newUser = await userService.addNewUser(req.body);
         return resp.status(201).json(newUser);
