@@ -24,3 +24,12 @@ AccountRouter.get('/:id', async (req, resp) => {
         resp.status(404).json(e);
     }
 })
+
+AccountRouter.post('/new', async (req, resp) => {
+    try {
+        let newAccount = await accountService.addNewAccount(req.body);
+        return resp.status(201).json(newAccount);
+    } catch (e) {
+        return resp.status(e.statusCode || 500).json(e);
+    }
+})
