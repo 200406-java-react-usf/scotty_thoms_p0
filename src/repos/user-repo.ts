@@ -68,29 +68,29 @@ export class UserRepository implements CrudRepository<User> {
     }
 
     async save(newUser: User): Promise<User> {
-        //WIP!
         let client: PoolClient;
         
-            try { 
-                client = await connectionPool.connect();
-                let roleId = (await client.query('select id from user_roles where name = $1', [newUser.role])).rows[0].id;
-                let sql = `
-                insert into users (username, password, first_name, last_name, role_id) values
-                ($1, $2, $3, $4, 3)
-                `;
-                console.log('made it 2')
-                let rs = await client.query(sql, [newUser.username, newUser.password, newUser.firstname, newUser.lastname, roleId]);
-                console.log('made it here 3')
-                newUser.id = rs.rows[0].id;
-                console.log('here we are!')
-                return newUser;
+        try {
+            client = await connectionPool.connect();
 
-            } catch (e) {
-                console.log('this happened.');
-                throw new InternalServerError();
-            } finally {
-                client && client.release();
-            }
+            //WIP FIX FROM REVABOARDS
+            let roleId = (await client.query('select id from user_roles where name = $1', [newUser.role])).rows[0].id;
+
+            let sql = `
+                insert into users (username, password, first_name, last_name, role_id)
+                values ($1, $2, $3, $4, $5) returning id
+            `;
+
+            let rs = await client.query(sql, [newUser.username, newUser.password, newUser.firstname, newUser.lastname, roleId]);
+
+            newUser.id = rs.rows[0].id;
+
+            return newUser;
+        } catch (e) {
+            throw new InternalServerError();
+        } finally {
+            client && client.release();
+        }
 
     }
 
