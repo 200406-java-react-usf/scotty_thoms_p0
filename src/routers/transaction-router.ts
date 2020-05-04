@@ -23,4 +23,13 @@ TransactionRouter.get('/:id', async (req, resp) => {
     } catch (e) {
         resp.status(404).json(e);
     }
-})
+});
+
+TransactionRouter.post('', async (req, resp) => {
+    try {
+        let newTransaction = await transactionService.addNewTransaction(req.body);
+        return resp.status(204).json(newTransaction);
+    } catch (e) {
+        return resp.status(e.statusCode || 500).json(e);
+    }
+});
