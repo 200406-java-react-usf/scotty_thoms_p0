@@ -25,7 +25,7 @@ AccountRouter.get('/:id', async (req, resp) => {
     }
 })
 
-AccountRouter.post('/new', async (req, resp) => {
+AccountRouter.post('', async (req, resp) => {
     try {
         let newAccount = await accountService.addNewAccount(req.body);
         return resp.status(201).json(newAccount);
