@@ -1,10 +1,14 @@
 class ApplicationError {
 
+    statusCode: number;
     message: string;
     reason: string;
+    timestamp: Date;
 
-    constructor(rsn?: string) {
+    constructor(statusCode: number, rsn?: string) {
+        this.statusCode = statusCode;
         this.message = 'Unexpected error occured.';
+        this.timestamp = new Date();
         rsn ? (this.reason = rsn) : this.reason = 'Unspecified reason';
     }
 
@@ -17,14 +21,14 @@ class ApplicationError {
 class WipError extends ApplicationError {
 
     constructor(reason?: string) {
-        super(reason);
+        super(500, reason);
         super.setMessage('Not implemented yet. Work in progress.');
     }
 }
 
 class AuthError extends ApplicationError {
     constructor(reason?: string) {
-        super(reason);
+        super(401, reason);
         super.setMessage('Authentication failed.');
     }
 }
@@ -32,7 +36,7 @@ class AuthError extends ApplicationError {
 class ResourceNotFoundError extends ApplicationError {
 
     constructor(reason?: string) {
-        super(reason);
+        super(404, reason);
         super.setMessage('Resource not found.');
     }
 }
@@ -40,7 +44,7 @@ class ResourceNotFoundError extends ApplicationError {
 class BadRequestError extends ApplicationError {
 
     constructor(reason?: string) {
-        super(reason);
+        super(400, reason);
         super.setMessage('Bad request. Invalid parameters entered.');
         
     }
@@ -49,7 +53,7 @@ class BadRequestError extends ApplicationError {
 class InsuficentFundsError extends ApplicationError {
 
     constructor(reason?: string) {
-        super(reason);
+        super(400, reason);
         super.setMessage('You do not have enough funds for this transaction.');
     }
 }
@@ -57,17 +61,18 @@ class InsuficentFundsError extends ApplicationError {
 class InternalServerError extends ApplicationError {
 
     constructor(reason?: string) {
-        super(reason);
+        super(500, reason);
         super.setMessage('Internal Server Error.');
     }
 }
 
-class UsernameNotAvailableError extends ApplicationError {
+class ResourcePersistenceError extends ApplicationError {
 
     constructor(reason?: string) {
-        super(reason);
-        super.setMessage('Username not available.');
+        super(409, reason);
+        super.setMessage('The resource was not persisted.');
     }
+    
 }
 
 export {
@@ -77,5 +82,5 @@ export {
     InsuficentFundsError,
     InternalServerError,
     AuthError,
-    UsernameNotAvailableError
+    ResourcePersistenceError
 }
