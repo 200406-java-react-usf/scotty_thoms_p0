@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { response } from 'express';
 import AppConfig from '../config/app';
 import { adminGuard } from '../middleware/auth-middlware';
 
@@ -32,6 +32,15 @@ UserRouter.post('', async (req, resp) => {
     try {
         let newUser = await userService.addNewUser(req.body);
         return resp.status(201).json(newUser);
+    } catch (e) {
+        return resp.status(e.statusCode || 500).json(e);
+    }
+});
+
+UserRouter.put('', async (req,resp) => {
+    try {
+        let updatedUser = await userService.updateUser(req.body);
+        return resp.status(202).json(updatedUser);
     } catch (e) {
         return resp.status(e.statusCode || 500).json(e);
     }

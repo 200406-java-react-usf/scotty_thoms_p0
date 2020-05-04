@@ -31,7 +31,7 @@ export class UserService {
             let user = await this.userRepo.getById(id);
 
             if (isEmptyObject(user)) {
-                throw new ResourceNotFoundError();
+                throw new ResourceNotFoundError('No user exists with provided ID.');
             }
 
             return this.removePassword(user);
@@ -76,6 +76,31 @@ export class UserService {
         return this.removePassword(persistedUser);
 
         
+    }
+
+    async updateUser(updatedUser: User): Promise<boolean> {4
+
+
+        if (!isValidObject(updatedUser)) {
+            throw new BadRequestError();
+        }
+
+        // will throw an error if no user is found with provided id
+        let userToUpdate = await this.getUserById(updatedUser.id);
+
+        let isAvailable = await this.checkUsername(updatedUser.username);
+
+        if(userToUpdate.username === updatedUser.username) {
+            isAvailable = true;
+        }
+        
+        if (!isAvailable) {
+            throw new ResourcePersistenceError('This username is already taken. Please pick another.');
+        }
+
+        await this.userRepo.update(updatedUser);
+
+        return true;
     }
 
     async getUserByUniqueKey(queryObj: any): Promise<User> {

@@ -95,14 +95,23 @@ export class UserRepository implements CrudRepository<User> {
     }
 
     async update(updatedUser: User): Promise<boolean> {
-        //WIP!
         let client: PoolClient;
             try { 
                 client = await connectionPool.connect();
-                let sql = `${this.baseQuery}`;
-                let rs = await client.query(sql);
+                let sql = `
+                    update users
+                    set
+                        username = $2,
+                        password = $3,
+                        first_name = $4,
+                        last_name = $5
+                    where id = $1
+                `;
+                await client.query(sql, [updatedUser.id, updatedUser.username, updatedUser.password, updatedUser.firstname, updatedUser.lastname]);
+                
                 return true;
             } catch (e) {
+                console.log(e);
                 throw new InternalServerError();
             } finally {
                 client && client.release();
