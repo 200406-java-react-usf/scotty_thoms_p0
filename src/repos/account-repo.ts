@@ -70,7 +70,7 @@ export class AccountRepository implements CrudRepository<Account> {
             }
     }
 
-    async update(updatedTransaction: Account): Promise<boolean> {
+    async update(updatedAccount: Account): Promise<boolean> {
         //WIP!
         let client: PoolClient;
             try { 
