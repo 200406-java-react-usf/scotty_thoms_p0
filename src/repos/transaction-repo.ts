@@ -48,14 +48,21 @@ export class TransactionRepository implements CrudRepository<Transaction> {
     }
 
     async save(newTransaction: Transaction): Promise<Transaction> {
-        //WIP
         let client: PoolClient;
         try {
             client = await connectionPool.connect();
-            let sql = `${this.baseQuery}`;
-            let rs = await client.query(sql);
-            return mapTransactionResultSet(rs.rows[0]);
+            let sql = `
+            insert into transactions (amount, description, account_id) values
+            ($1, $2, $3) returning id
+            `;
+
+            let rs = await client.query(sql, [newTransaction.amount, newTransaction.description, newTransaction.accountId]);
+            newTransaction.id = rs.rows[0].id;
+            
+            return newTransaction;
+
         } catch (e) {
+            console.log(e);
             throw new InternalServerError();
         } finally {
             client && client.release();
@@ -70,6 +77,20 @@ export class TransactionRepository implements CrudRepository<Transaction> {
             let sql = `${this.baseQuery}`;
             let rs = await client.query(sql);
             return true;
+        } catch (e) {
+            throw new InternalServerError();
+        } finally {
+            client && client.release();
+        }
+    }
+
+    async getTransactionByUniqueKey(key: string, val: string): Promise<Transaction> {
+        let client: PoolClient;
+        try {
+            client = await connectionPool.connect();
+            let sql = `${this.baseQuery} where t.${key} = $1`;
+            let rs = await client.query(sql, [val]);
+            return mapTransactionResultSet(rs.rows[0]);
         } catch (e) {
             throw new InternalServerError();
         } finally {
