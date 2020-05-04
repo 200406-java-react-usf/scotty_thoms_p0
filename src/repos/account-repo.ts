@@ -86,23 +86,22 @@ export class AccountRepository implements CrudRepository<Account> {
             }
     }
 
-    async checkOwnerId(id: number): Promise<boolean> {
-        //WIP!
+
+    async getAccountByUniqueKey(key: string, val: string): Promise<Account> {
+
         let client: PoolClient;
+
         try {
             client = await connectionPool.connect();
-            let sql = `select * from users u where id = ${id}`;
-            let rs = await client.query(sql);
-            console.log(rs);
-            if (!rs.rows[0]) {
-                return true;
-            } else {
-                return false;
-            }
+            let sql = `${this.baseQuery} where a.${key} = $1`;
+            let rs = await client.query(sql, [val]);
+            return mapAccountResultSet(rs.rows[0]);
         } catch (e) {
-            throw e;
+            throw new InternalServerError();
         } finally {
             client && client.release();
         }
+        
+    
     }
 }
