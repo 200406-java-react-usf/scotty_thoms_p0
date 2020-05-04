@@ -110,22 +110,23 @@ export class UserRepository implements CrudRepository<User> {
 
     }
 
-    async checkUsername(username: string): Promise<boolean> {
-        
+    async getUserByUniqueKey(key: string, val: string): Promise<User> {
+
         let client: PoolClient;
+
         try {
             client = await connectionPool.connect();
-            let sql = `select * from users u where username = '${username}'`;
-            let rs = await client.query(sql);
-            if (!rs.rows[0]) {
-                return true;
-            } else {
-                return false;
-            }
+            let sql = `${this.baseQuery} where u.${key} = $1`;
+            let rs = await client.query(sql, [val]);
+            return mapUserResultSet(rs.rows[0]);
         } catch (e) {
-            throw e;
+            throw new InternalServerError();
         } finally {
             client && client.release();
         }
+        
+    
     }
+
+    
 }
