@@ -124,7 +124,22 @@ export class AccountRepository implements CrudRepository<Account> {
         } finally {
             client && client.release();
         }
-        
-    
+    }
+
+    async checkOwnerExists(val: number): Promise<Account> {
+        let client: PoolClient;
+
+        try {
+            client = await connectionPool.connect();
+            let sql = `
+                select * from users where id = $1
+            `;
+            let rs = await client.query(sql, [val]);
+            return mapAccountResultSet(rs.rows[0]);
+        } catch (e) {
+            throw new InternalServerError();
+        } finally {
+            client && client.release();
+        }
     }
 }
