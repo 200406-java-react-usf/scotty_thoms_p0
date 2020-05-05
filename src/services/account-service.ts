@@ -6,6 +6,7 @@ import { isValidId, isEmptyObject, isValidObject, isPropertyOf, isValidStrings }
 export class AccountService {
     constructor (private accountRepo: AccountRepository) {
         this.accountRepo = accountRepo;
+        
     }
 
     async getAllAccounts(): Promise<Account[]> {
@@ -121,14 +122,14 @@ export class AccountService {
     }
 
     async checkOwnerExists(ownerId: number): Promise<boolean> {
-        // WIP I guess... This will only return if account exists already with that user... need to find fix
-        try {
-            await this.getAccountByUniqueKey({'ownerId': ownerId})
-        } catch (e) {
+        
+        let result = await this.accountRepo.checkOwnerExists(ownerId);
+        if (isEmptyObject(result)) {
             console.log(`No account found with id ${ownerId}. Try again.`);
             return false;
-        }
-        console.log(`Account exists with id ${ownerId}. Proceed.`);
+        } else {
+            console.log(`Account exists with id ${ownerId}. Proceed.`);
         return true;
+        }
     }
 }
