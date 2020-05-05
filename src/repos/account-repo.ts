@@ -71,12 +71,17 @@ export class AccountRepository implements CrudRepository<Account> {
     }
 
     async update(updatedAccount: Account): Promise<boolean> {
-        //WIP!
+        // only added functionality to update account type (for now)
         let client: PoolClient;
             try { 
                 client = await connectionPool.connect();
-                let sql = `${this.baseQuery}`;
-                let rs = await client.query(sql);
+                let sql = `
+                    update accounts
+                    set
+                        account_type = $2
+                    where id = $1
+                `;
+                let rs = await client.query(sql, [updatedAccount.id, updatedAccount.type]);
                 return true;
 
             } catch (e) {

@@ -53,6 +53,20 @@ export class AccountService {
         return persistedAccount;
     }
 
+    async updateAccount(updatedAccount: Account): Promise<boolean> {
+
+        if (!isValidObject(updatedAccount)) {
+            throw new BadRequestError();
+        }
+
+        // will throw an error if no account is found with provided id
+        await this.getAccountById(updatedAccount.id);
+
+        await this.accountRepo.update(updatedAccount);
+
+        return true;
+    }
+
     async getAccountByUniqueKey(queryObj: any): Promise<Account> {
 
         try {

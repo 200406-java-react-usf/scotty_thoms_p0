@@ -33,3 +33,12 @@ AccountRouter.post('', async (req, resp) => {
         return resp.status(e.statusCode || 500).json(e);
     }
 })
+
+AccountRouter.put('', async (req,resp) => {
+    try {
+        let updatedAccount = await accountService.updateAccount(req.body);
+        return resp.status(202).json(updatedAccount);
+    } catch (e) {
+        return resp.status(e.statusCode || 500).json(e);
+    }
+})
