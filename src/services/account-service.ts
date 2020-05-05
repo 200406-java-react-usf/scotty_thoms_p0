@@ -128,7 +128,6 @@ export class AccountService {
             console.log(`No account found with id ${ownerId}. Try again.`);
             return false;
         }
-
         console.log(`Account exists with id ${ownerId}. Proceed.`);
         return true;
     }
