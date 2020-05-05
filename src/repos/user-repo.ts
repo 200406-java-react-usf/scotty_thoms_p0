@@ -116,7 +116,24 @@ export class UserRepository implements CrudRepository<User> {
             } finally {
                 client && client.release();
             }
+    }
 
+    async delete(userToDelete: User): Promise<boolean> {
+        let client: PoolClient;
+            try { 
+                client = await connectionPool.connect();
+                let sql = `
+                    delete from users
+                    where id = $1
+                `;
+                await client.query(sql, [userToDelete.id]);
+                return true;
+            } catch (e) {
+                console.log(e);
+                throw new InternalServerError();
+            } finally {
+                client && client.release();
+            }
     }
 
     async getUserByUniqueKey(key: string, val: string): Promise<User> {

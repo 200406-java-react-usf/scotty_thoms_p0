@@ -44,4 +44,13 @@ UserRouter.put('', async (req,resp) => {
     } catch (e) {
         return resp.status(e.statusCode || 500).json(e);
     }
+});
+
+UserRouter.delete('', adminGuard, async (req,resp) => {
+    try {
+        let userToBeDeleted = await userService.deleteUser(req.body);
+        return resp.status(202).json(userToBeDeleted);
+    } catch (e) {
+        return resp.status(e.statusCode || 500).json(e);
+    }
 })

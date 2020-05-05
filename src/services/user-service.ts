@@ -78,7 +78,7 @@ export class UserService {
         
     }
 
-    async updateUser(updatedUser: User): Promise<boolean> {4
+    async updateUser(updatedUser: User): Promise<boolean> {
 
 
         if (!isValidObject(updatedUser)) {
@@ -101,6 +101,21 @@ export class UserService {
         await this.userRepo.update(updatedUser);
 
         return true;
+    }
+
+    async deleteUser(userToBeDeleted: User): Promise<boolean> {
+        
+        if (!isValidObject(userToBeDeleted)) {
+            throw new BadRequestError();
+        }
+
+        // will throw an error if no user is found with provided id
+        await this.getUserById(userToBeDeleted.id);
+
+        await this.userRepo.delete(userToBeDeleted);
+
+        return true;
+
     }
 
     async getUserByUniqueKey(queryObj: any): Promise<User> {
