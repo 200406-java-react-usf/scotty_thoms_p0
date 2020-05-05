@@ -42,3 +42,12 @@ AccountRouter.put('', async (req,resp) => {
         return resp.status(e.statusCode || 500).json(e);
     }
 })
+
+AccountRouter.delete('', adminGuard, async (req, resp) => {
+    try {
+        let accountToBeDeleted = await accountService.deleteAccount(req.body);
+        return resp.status(202).json(accountToBeDeleted);
+    } catch (e) {
+        return resp.status(e.statusCode || 500).json(e);
+    }
+})

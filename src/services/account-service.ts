@@ -67,6 +67,20 @@ export class AccountService {
         return true;
     }
 
+    async deleteAccount(accountToBeDeleted: Account): Promise<boolean> {
+
+        if (!isValidObject(accountToBeDeleted)) {
+            throw new BadRequestError();
+        }
+
+        // will throw an error if no account is found with provided id
+        await this.getAccountById(accountToBeDeleted.id);
+
+        await this.accountRepo.delete(accountToBeDeleted);
+
+        return true;
+    }
+
     async getAccountByUniqueKey(queryObj: any): Promise<Account> {
 
         try {
@@ -86,9 +100,9 @@ export class AccountService {
                 return await this.getAccountById(+val);
             }
 
-            if(!isValidStrings(val)) {
-                throw new BadRequestError();
-            }
+            // if(!isValidStrings(val)) {
+            //     throw new BadRequestError();
+            // }
 
             // have to change wording to work with db
             if (key === 'ownerId') {
@@ -107,6 +121,7 @@ export class AccountService {
     }
 
     async checkOwnerExists(ownerId: number): Promise<boolean> {
+        // WIP I guess... This will only return if account exists already with that user... need to find fix
         try {
             await this.getAccountByUniqueKey({'ownerId': ownerId})
         } catch (e) {

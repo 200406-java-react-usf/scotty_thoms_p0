@@ -91,6 +91,24 @@ export class AccountRepository implements CrudRepository<Account> {
             }
     }
 
+    async delete(accountToDelete: Account): Promise<boolean> {
+        let client: PoolClient;
+            try { 
+                client = await connectionPool.connect();
+                let sql = `
+                    delete from accounts
+                    where id = $1
+                `;
+                await client.query(sql, [accountToDelete.id]);
+                return true;
+            } catch (e) {
+                console.log(e);
+                throw new InternalServerError();
+            } finally {
+                client && client.release();
+            }
+    }
+
 
     async getAccountByUniqueKey(key: string, val: string): Promise<Account> {
 
