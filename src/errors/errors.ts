@@ -18,14 +18,6 @@ class ApplicationError {
 
 }
 
-class WipError extends ApplicationError {
-
-    constructor(reason?: string) {
-        super(500, reason);
-        super.setMessage('Not implemented yet. Work in progress.');
-    }
-}
-
 class AuthError extends ApplicationError {
     constructor(reason?: string) {
         super(401, reason);
