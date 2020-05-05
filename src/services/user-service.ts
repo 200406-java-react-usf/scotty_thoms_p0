@@ -22,6 +22,24 @@ export class UserService {
         }
     }
 
+    async authenticateUser(un: string, pw: string): Promise<User> {
+        try {
+            if (!isValidStrings(un,pw)) {
+                throw new BadRequestError();
+            }
+
+            let authUser: User = await this.userRepo.getbyCredentials(un,pw);
+
+            if (isEmptyObject(authUser)) {
+                throw new AuthError();
+            }
+
+            return this.removePassword(authUser);
+        } catch (e) {
+            throw e;
+        }
+    }
+
     async getUserById(id: number): Promise<User> {
         try {
             if(!isValidId(id)) {
@@ -101,7 +119,7 @@ export class UserService {
     }
 
     async getUserByUniqueKey(queryObj: any): Promise<User> {
-
+        //WIP - not implemented
         try {
 
             let queryKeys = Object.keys(queryObj);
@@ -140,14 +158,14 @@ export class UserService {
     async checkUsername(username: string): Promise<boolean> {
         
         try {
-            await this.getUserByUniqueKey({"username": username});
+            await this.userRepo.checkUsername(username);
         } catch (e) {
-            console.log(`username ${username} is available.`);
-            return true;
+            console.log(`username ${username} is already taken.`);
+            return false;
         } 
   
-        console.log(`username ${username} is already taken.`);
-        return false;
+        console.log(`username ${username} is available.`);
+        return true;
       }
 
     
