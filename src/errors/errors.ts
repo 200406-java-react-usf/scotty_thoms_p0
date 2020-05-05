@@ -68,7 +68,6 @@ class ResourcePersistenceError extends ApplicationError {
 }
 
 export {
-    WipError,
     ResourceNotFoundError,
     BadRequestError,
     InsuficentFundsError,
