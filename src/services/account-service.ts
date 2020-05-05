@@ -129,7 +129,7 @@ export class AccountService {
             return false;
         } else {
             console.log(`Account exists with id ${ownerId}. Proceed.`);
-        return true;
+            return true;
         }
     }
 }
