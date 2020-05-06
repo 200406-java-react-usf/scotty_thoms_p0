@@ -18,7 +18,10 @@ export class TransactionRepository implements CrudRepository<Transaction> {
     from transactions t
     `
     
-    
+    /**
+     * Gets all Transactions in database.
+     * Need Admin access to execute.
+     */
     async getAll(): Promise<Transaction[]> {
         let client: PoolClient;
         try {
@@ -33,6 +36,10 @@ export class TransactionRepository implements CrudRepository<Transaction> {
         }
     };
 
+    /**
+     * Gets a single Transaction with an id you send as param
+     * @param id {number} id of transaction
+     */
     async getById(id: number): Promise<Transaction> {
         let client: PoolClient;
         try {
@@ -47,6 +54,10 @@ export class TransactionRepository implements CrudRepository<Transaction> {
         }
     }
 
+    /**
+     * Creates a new Transaction with information you send as param
+     * @param newTransaction {Transaction} new transaction you want to create
+     */
     async save(newTransaction: Transaction): Promise<Transaction> {
         let client: PoolClient;
         try {
@@ -69,8 +80,12 @@ export class TransactionRepository implements CrudRepository<Transaction> {
         }
     }
 
+    /**
+     * Updates a transaction that you send in as param.
+     * @param updatedTransaction {Transaction} transaction you want updated
+     */
     async update(updatedTransaction: Transaction): Promise<boolean> {
-        //WIP
+        // WIP - Transactions are not allowed to be updated yet.
         let client: PoolClient;
         try {
             client = await connectionPool.connect();
@@ -84,6 +99,11 @@ export class TransactionRepository implements CrudRepository<Transaction> {
         }
     }
 
+    /**
+     * Will check the Transaction table in database for key and value you send as params
+     * @param key {string} key in database
+     * @param val {string} value in database
+     */
     async getTransactionByUniqueKey(key: string, val: string): Promise<Transaction> {
         let client: PoolClient;
         try {
@@ -98,6 +118,10 @@ export class TransactionRepository implements CrudRepository<Transaction> {
         }
     }
 
+    /**
+     * Returns a Transaction with id you send as param if account exists
+     * @param accountId {number} accound id
+     */
     async checkAccountExists(accountId: number): Promise<Transaction> {
         let client: PoolClient;
 
@@ -115,6 +139,10 @@ export class TransactionRepository implements CrudRepository<Transaction> {
         }
     }
 
+    /**
+     * Returns the current balance of account with id sent as param
+     * @param accountId {number} account id
+     */
     async getAccountBalance(accountId: number): Promise<number> {
         let client: PoolClient;
         try {
