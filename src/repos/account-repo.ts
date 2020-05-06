@@ -152,7 +152,7 @@ export class AccountRepository implements CrudRepository<Account> {
     }
 
     /**
-     * Returns an Account with id you send in as param
+     * Returns an Account with id you send in as param if account exists
      * @param val {number} owner id 
      */
     async checkOwnerExists(val: number): Promise<Account> {
