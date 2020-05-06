@@ -99,24 +99,25 @@ export class TransactionRepository implements CrudRepository<Transaction> {
         }
     }
 
-    /**
-     * Will check the Transaction table in database for key and value you send as params
-     * @param key {string} key in database
-     * @param val {string} value in database
-     */
-    async getTransactionByUniqueKey(key: string, val: string): Promise<Transaction> {
-        let client: PoolClient;
-        try {
-            client = await connectionPool.connect();
-            let sql = `${this.baseQuery} where t.${key} = $1`;
-            let rs = await client.query(sql, [val]);
-            return mapTransactionResultSet(rs.rows[0]);
-        } catch (e) {
-            throw new InternalServerError();
-        } finally {
-            client && client.release();
-        }
-    }
+    // /**
+    // /* NOT IMPLEMENTED
+    //  * Will check the Transaction table in database for key and value you send as params
+    //  * @param key {string} key in database
+    //  * @param val {string} value in database
+    //  */
+    // async getTransactionByUniqueKey(key: string, val: string): Promise<Transaction> { 
+    //     let client: PoolClient;
+    //     try {
+    //         client = await connectionPool.connect();
+    //         let sql = `${this.baseQuery} where t.${key} = $1`;
+    //         let rs = await client.query(sql, [val]);
+    //         return mapTransactionResultSet(rs.rows[0]);
+    //     } catch (e) {
+    //         throw new InternalServerError();
+    //     } finally {
+    //         client && client.release();
+    //     }
+    // }
 
     /**
      * Returns a Transaction with id you send as param if account exists

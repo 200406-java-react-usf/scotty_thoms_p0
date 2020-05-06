@@ -130,26 +130,27 @@ export class AccountRepository implements CrudRepository<Account> {
             }
     }
 
-    /**
-     * Will check the accounts table in database for key and value you send as params
-     * @param key {string} key in database
-     * @param val {string} value in database
-     */
-    async getAccountByUniqueKey(key: string, val: string): Promise<Account> {
+    // /**
+    //  * NOT IMPLEMENTED
+    //  * Will check the accounts table in database for key and value you send as params
+    //  * @param key {string} key in database
+    //  * @param val {string} value in database
+    //  */ 
+    // async getAccountByUniqueKey(key: string, val: string): Promise<Account> {
 
-        let client: PoolClient;
+    //     let client: PoolClient;
 
-        try {
-            client = await connectionPool.connect();
-            let sql = `${this.baseQuery} where a.${key} = $1`;
-            let rs = await client.query(sql, [val]);
-            return mapAccountResultSet(rs.rows[0]);
-        } catch (e) {
-            throw new InternalServerError();
-        } finally {
-            client && client.release();
-        }
-    }
+    //     try {
+    //         client = await connectionPool.connect();
+    //         let sql = `${this.baseQuery} where a.${key} = $1`;
+    //         let rs = await client.query(sql, [val]);
+    //         return mapAccountResultSet(rs.rows[0]);
+    //     } catch (e) {
+    //         throw new InternalServerError();
+    //     } finally {
+    //         client && client.release();
+    //     }
+    // }
 
     /**
      * Returns an Account with id you send in as param if account exists

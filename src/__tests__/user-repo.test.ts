@@ -135,20 +135,5 @@ describe('userRepo', () => {
         expect(mockConnect).toBeCalledTimes(1);
     });
 
-    test('should resolve to a User object when getUserByUniqueKey is called', async() => {
-        
-        //Arrange
-        expect.hasAssertions();
-
-        let mockUser = new User(1, 'testUsername', 'password', 'firstName', 'lastName', 'Locked');
-        (mockMapper.mapUserResultSet as jest.Mock).mockReturnValue(mockUser);
-
-        //Act
-        let result = await sut.getUserByUniqueKey("username", "testUsername");
-
-        //Assert
-        expect(result).toBeTruthy();
-        expect(result instanceof User).toBe(true);
-        expect(mockConnect).toBeCalledTimes(1);
-    });
+   
 });

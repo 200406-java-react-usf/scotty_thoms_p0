@@ -163,27 +163,28 @@ export class UserRepository implements CrudRepository<User> {
             }
     }
 
-    /**
-     * Will check the users table in database for key and value you send as params
-     * @param key {string} key in database
-     * @param val {string} value in database
-     */
-    async getUserByUniqueKey(key: string, val: string): Promise<User> {
+    // /**
+    // /* NOT IMPLEMENTED
+    //  * Will check the users table in database for key and value you send as params
+    //  * @param key {string} key in database
+    //  * @param val {string} value in database
+    //  */
+    // async getUserByUniqueKey(key: string, val: string): Promise<User> {
 
-        let client: PoolClient;
+    //     let client: PoolClient;
 
-        try {
-            client = await connectionPool.connect();
-            let sql = `${this.baseQuery} where u.${key} = $1`;
-            let rs = await client.query(sql, [val]);
-            return mapUserResultSet(rs.rows[0]);
-        } catch (e) {
-            throw new InternalServerError();
-        } finally {
-            client && client.release();
-        }
+    //     try {
+    //         client = await connectionPool.connect();
+    //         let sql = `${this.baseQuery} where u.${key} = $1`;
+    //         let rs = await client.query(sql, [val]);
+    //         return mapUserResultSet(rs.rows[0]);
+    //     } catch (e) {
+    //         throw new InternalServerError();
+    //     } finally {
+    //         client && client.release(); 
+    //     }
     
-    }
+    // }
 
     /**
      * Checks to see if the username exists in the database. 

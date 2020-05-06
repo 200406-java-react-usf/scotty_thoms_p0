@@ -143,46 +143,47 @@ export class UserService {
 
     }
 
-    /**
-     * Will get user by a unique key that you provide.
-     * @param queryObj {any}
-     */
-    async getUserByUniqueKey(queryObj: any): Promise<User> {
-        //WIP - not implemented
-        try {
+    // /**
+    //  * NOT IMPLEMENTED
+    //  * Will get user by a unique key that you provide.
+    //  * @param queryObj {any}
+    //  */ 
+    // async getUserByUniqueKey(queryObj: any): Promise<User> {
+    //     //WIP - not implemented
+    //     try {
 
-            let queryKeys = Object.keys(queryObj);
+    //         let queryKeys = Object.keys(queryObj);
 
-            if(!queryKeys.every(key => isPropertyOf(key, User))) {
-                throw new BadRequestError();
-            }
+    //         if(!queryKeys.every(key => isPropertyOf(key, User))) {
+    //             throw new BadRequestError();
+    //         }
 
-            // only supports single param searches (for now)
-            let key = queryKeys[0];
-            let val = queryObj[key];
+    //         // only supports single param searches (for now)
+    //         let key = queryKeys[0];
+    //         let val = queryObj[key];
 
-            // if they are searching for a user by id, reuse the logic we already have
-            if (key === 'id') {
-                return await this.getUserById(+val);
-            }
+    //         // if they are searching for a user by id, reuse the logic we already have
+    //         if (key === 'id') {
+    //             return await this.getUserById(+val);
+    //         }
 
-            if(!isValidStrings(val)) {
-                throw new BadRequestError();
-            }
+    //         if(!isValidStrings(val)) {
+    //             throw new BadRequestError();
+    //         }
 
-            let user = await this.userRepo.getUserByUniqueKey(key, val);
+    //         let user = await this.userRepo.getUserByUniqueKey(key, val);
 
-            if (isEmptyObject(user)) {
-                throw new ResourceNotFoundError();
+    //         if (isEmptyObject(user)) {
+    //             throw new ResourceNotFoundError();
                 
-            }
+    //         }
 
-            return this.removePassword(user);
+    //         return this.removePassword(user);
 
-        } catch (e) {
-            throw e;
-        }
-    }
+    //     } catch (e) {
+    //         throw e;
+    //     }
+    // }
 
     /**
      * Will check to see if the username already exists in the database

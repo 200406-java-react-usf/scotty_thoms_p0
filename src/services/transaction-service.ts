@@ -78,50 +78,51 @@ export class TransactionService {
         return persistedTransaction;
     }
 
-    /**
-     * Will search transaction table for given queryObj you send as param
-     * @param queryObj {any}
-     */
-    async getTransactionByUniqueKey(queryObj: any): Promise<Transaction> {
+    // /**
+    // /* NOT IMPLEMENTED
+    //  * Will search transaction table for given queryObj you send as param
+    //  * @param queryObj {any}
+    //  */
+    // async getTransactionByUniqueKey(queryObj: any): Promise<Transaction> { 
 
-        try {
+    //     try {
 
-            let queryKeys = Object.keys(queryObj);
+    //         let queryKeys = Object.keys(queryObj);
 
-            if(!queryKeys.every(key => isPropertyOf(key, Transaction))) {
-                throw new BadRequestError();
-            }
+    //         if(!queryKeys.every(key => isPropertyOf(key, Transaction))) {
+    //             throw new BadRequestError();
+    //         }
 
-            // only supports single param searches (for now)
-            let key = queryKeys[0];
-            let val = queryObj[key];
+    //         // only supports single param searches (for now)
+    //         let key = queryKeys[0];
+    //         let val = queryObj[key];
 
-            // if they are searching for an transaction by id, reuse the logic we already have
-            if (key === 'id') {
-                return await this.getTransactionById(+val);
-            }
+    //         // if they are searching for an transaction by id, reuse the logic we already have
+    //         if (key === 'id') {
+    //             return await this.getTransactionById(+val);
+    //         }
 
-            // if(!isValidStrings(val)) {
-            //     throw new BadRequestError();
-            // }
+    //         // if(!isValidStrings(val)) {
+    //         //     throw new BadRequestError();
+    //         // }
             
 
-            // have to change wording to work with db
-            if (key === 'accountId') {
-                key = 'account_id';
-            }
+    //         // have to change wording to work with db
+    //         if (key === 'accountId') {
+    //             key = 'account_id';
+    //         }
 
-            let transaction = await this.transactionRepo.getTransactionByUniqueKey(key, val);
+    //         let transaction = await this.transactionRepo.getTransactionByUniqueKey(key, val);
            
-            if (isEmptyObject(transaction)) {
-                throw new ResourceNotFoundError();
-            }
-            return transaction;
+    //         if (isEmptyObject(transaction)) {
+    //             throw new ResourceNotFoundError();
+    //         }
+    //         return transaction;
 
-        } catch (e) {
-            throw e;
-        }
-    }
+    //     } catch (e) {
+    //         throw e;
+    //     }
+    // }
     
     /**
      * Checks to see if the account actually exists in the database.

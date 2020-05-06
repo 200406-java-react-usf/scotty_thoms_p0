@@ -116,20 +116,5 @@ describe('transactionRepo', () => {
         expect(mockConnect).toBeCalledTimes(1);
     });
 
-    test('should resolve to an transaction object when getTransactionByUniqueKey is called', async() => {
-        
-        //Arrange
-        expect.hasAssertions();
-
-        let mockTransaction = new Transaction(1, 20, 'test', 1);
-        (mockMapper.mapTransactionResultSet as jest.Mock).mockReturnValue(mockTransaction);
-
-        //Act
-        let result = await sut.getTransactionByUniqueKey("accountId", "1");
-
-        //Assert
-        expect(result).toBeTruthy();
-        expect(result instanceof Transaction).toBe(true);
-        expect(mockConnect).toBeCalledTimes(1);
-    });
+    
 });

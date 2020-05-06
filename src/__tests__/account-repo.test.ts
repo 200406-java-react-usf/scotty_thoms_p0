@@ -116,20 +116,5 @@ describe('accountRepo', () => {
         expect(mockConnect).toBeCalledTimes(1);
     });
 
-    test('should resolve to an Account object when getAccountByUniqueKey is called', async() => {
-        
-        //Arrange
-        expect.hasAssertions();
-
-        let mockAccount = new Account(1, 500, 'Checking', 1);
-        (mockMapper.mapAccountResultSet as jest.Mock).mockReturnValue(mockAccount);
-
-        //Act
-        let result = await sut.getAccountByUniqueKey("accountId", "1");
-
-        //Assert
-        expect(result).toBeTruthy();
-        expect(result instanceof Account).toBe(true);
-        expect(mockConnect).toBeCalledTimes(1);
-    });
+    
 });

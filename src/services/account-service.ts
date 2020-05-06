@@ -102,48 +102,49 @@ export class AccountService {
         return true;
     }
 
-    /**
-     * Will search account table for given queryObj you send as param
-     * @param queryObj {any} the unique key you want to check for
-     */
-    async getAccountByUniqueKey(queryObj: any): Promise<Account> {
+    // /**
+    // /* NOT IMPLEMENTED
+    //  * Will search account table for given queryObj you send as param
+    //  * @param queryObj {any} the unique key you want to check for
+    //  */
+    // async getAccountByUniqueKey(queryObj: any): Promise<Account> { 
 
-        try {
+    //     try {
 
-            let queryKeys = Object.keys(queryObj);
+    //         let queryKeys = Object.keys(queryObj);
 
-            if(!queryKeys.every(key => isPropertyOf(key, Account))) {
-                throw new BadRequestError();
-            }
+    //         if(!queryKeys.every(key => isPropertyOf(key, Account))) {
+    //             throw new BadRequestError();
+    //         }
 
-            // only supports single param searches (for now)
-            let key = queryKeys[0];
-            let val = queryObj[key];
+    //         // only supports single param searches (for now)
+    //         let key = queryKeys[0];
+    //         let val = queryObj[key];
 
-            // if they are searching for an account by id, reuse the logic we already have
-            if (key === 'id') {
-                return await this.getAccountById(+val);
-            }
+    //         // if they are searching for an account by id, reuse the logic we already have
+    //         if (key === 'id') {
+    //             return await this.getAccountById(+val);
+    //         }
 
-            // if(!isValidStrings(val)) {
-            //     throw new BadRequestError();
-            // }
+    //         // if(!isValidStrings(val)) {
+    //         //     throw new BadRequestError();
+    //         // }
 
-            // have to change wording to work with db
-            if (key === 'ownerId') {
-                key = 'owner_id';
-            }
+    //         // have to change wording to work with db
+    //         if (key === 'ownerId') {
+    //             key = 'owner_id';
+    //         }
 
-            let account = await this.accountRepo.getAccountByUniqueKey(key, val);
-            if (isEmptyObject(account)) {
-                throw new ResourceNotFoundError();
-            }
-            return account;
+    //         let account = await this.accountRepo.getAccountByUniqueKey(key, val);
+    //         if (isEmptyObject(account)) {
+    //             throw new ResourceNotFoundError();
+    //         }
+    //         return account;
 
-        } catch (e) {
-            throw e;
-        }
-    }
+    //     } catch (e) {
+    //         throw e;
+    //     }
+    // }
 
     /**
      * Will check to see if the user actually exists in the database
