@@ -3,6 +3,10 @@ import { UserSchema, AccountSchema, TransactoinSchema } from "./schemas";
 import { Account } from "../models/account";
 import { Transaction } from "../models/transaction";
 
+/**
+ * Maps the values that the database sends to a readable User object
+ * @param resultSet {UserSchema} Schema used in mapping
+ */
 export function mapUserResultSet(resultSet: UserSchema): User {
 
 	if (!resultSet) {
@@ -19,6 +23,10 @@ export function mapUserResultSet(resultSet: UserSchema): User {
 	);
 }
 
+/**
+ * Maps the values that the database sends to a readable Account object
+ * @param resultSet {UserSchema} Schema used in mapping
+ */
 export function mapAccountResultSet(resultSet: AccountSchema): Account {
     
     if (!resultSet) {
@@ -33,6 +41,10 @@ export function mapAccountResultSet(resultSet: AccountSchema): Account {
     );
 }
 
+/**
+ * Maps the values that the database sends to a readable Transaction object
+ * @param resultSet {UserSchema} Schema used in mapping
+ */
 export function mapTransactionResultSet(resultSet: TransactoinSchema): Transaction {
 
     if (!resultSet) {
