@@ -17,7 +17,10 @@ export class AccountRepository implements CrudRepository<Account> {
         a.owner_id
     from accounts a
     `
-    
+    /**
+     * Gets all Accounts from database.
+     * Need admin access to access.
+     */
     async getAll(): Promise<Account[]> {
         let client: PoolClient;
             try { 
@@ -33,6 +36,10 @@ export class AccountRepository implements CrudRepository<Account> {
             }
     };
 
+    /**
+     * Gets a single Account with an id you send as param
+     * @param id {number} the id of the account you want to find
+     */
     async getById(id: number): Promise<Account> {
         let client: PoolClient;
             try { 
@@ -48,6 +55,10 @@ export class AccountRepository implements CrudRepository<Account> {
             }
     }
 
+    /**
+     * Creates a new account with information you send as param
+     * @param newAccount {Account} new account you want to create
+     */
     async save(newAccount: Account): Promise<Account> {
         let client: PoolClient;
             try { 
@@ -70,6 +81,11 @@ export class AccountRepository implements CrudRepository<Account> {
             }
     }
 
+    /**
+     * Updates an account that you send in as param.
+     * Will only update account type (for now)
+     * @param updatedAccount {Account} account you want updated
+     */
     async update(updatedAccount: Account): Promise<boolean> {
         // only added functionality to update account type (for now)
         let client: PoolClient;
@@ -91,6 +107,11 @@ export class AccountRepository implements CrudRepository<Account> {
             }
     }
 
+    /**
+     * Deletes an account that you send in as a param
+     * The only thing needed to delete an account is the account ID. Need Admin access to delete acct.
+     * @param accountToDelete {Account} account you want to delete
+     */
     async delete(accountToDelete: Account): Promise<boolean> {
         let client: PoolClient;
             try { 
@@ -109,7 +130,11 @@ export class AccountRepository implements CrudRepository<Account> {
             }
     }
 
-
+    /**
+     * Will check the users table in database for key and value you send as params
+     * @param key {string} key in database
+     * @param val {string} value in database
+     */
     async getAccountByUniqueKey(key: string, val: string): Promise<Account> {
 
         let client: PoolClient;
@@ -126,6 +151,10 @@ export class AccountRepository implements CrudRepository<Account> {
         }
     }
 
+    /**
+     * Returns an Account with id you send in as param
+     * @param val {number} owner id 
+     */
     async checkOwnerExists(val: number): Promise<Account> {
         let client: PoolClient;
 
