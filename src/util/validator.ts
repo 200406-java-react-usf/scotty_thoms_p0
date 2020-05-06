@@ -7,7 +7,8 @@
  * @param id {number} The ID to be checked if it is valid.
  */
 export const isValidId = (id: number): boolean => {
-    return (id && typeof id === 'number' && Number.isInteger(id) && id > 0);
+    if (id && typeof id === 'number' && Number.isInteger(id) && id > 0) return true;
+    return false;
 }
 /**
  * Checks to see if object is empty
