@@ -8,6 +8,10 @@ export class TransactionService {
         this.transactionRepo = transactionRepo;
     }
 
+    /**
+     * Gets all transactions in database
+     * Admin role required.
+     */
     async getAllTransactions(): Promise<Transaction[]> {
         try {
             let transactions = await this.transactionRepo.getAll();
@@ -22,6 +26,10 @@ export class TransactionService {
         }
     }
 
+    /**
+     * Used to get a specific transaction of id given
+     * @param id {number} id of transaction
+     */
     async getTransactionById(id: number): Promise<Transaction> {
         try {
             if (!isValidId(id)) {
@@ -40,6 +48,11 @@ export class TransactionService {
         }
     }
 
+    /**
+     * Used to create a new transaction 
+     * Will update account balance after transaction is "approved"
+     * @param newTransaction {Transaction} new transaction
+     */
     async addNewTransaction(newTransaction: Transaction): Promise<Transaction> {
 
         if (!isValidObject(newTransaction)) {
@@ -60,13 +73,15 @@ export class TransactionService {
             throw new InsuficentFundsError();
         }
 
-        
-
         const persistedTransaction = await this.transactionRepo.save(newTransaction);
 
         return persistedTransaction;
     }
 
+    /**
+     * Will search transaction table for given queryObj you send as param
+     * @param queryObj {any}
+     */
     async getTransactionByUniqueKey(queryObj: any): Promise<Transaction> {
 
         try {
@@ -108,6 +123,10 @@ export class TransactionService {
         }
     }
     
+    /**
+     * Checks to see if the account actually exists in the database.
+     * @param accountId {number} account id
+     */
     async checkAccountExists(accountId: number): Promise<boolean> {
         let result = await this.transactionRepo.checkAccountExists(accountId);
         if (isEmptyObject(result)) {
@@ -119,6 +138,10 @@ export class TransactionService {
         }
     }
 
+    /**
+     * Gets the current balance of account
+     * @param accountId {nubmer} account id
+     */
     async checkAccountBalance(accountId: number): Promise<number> {
         try {
             let balance = await this.transactionRepo.getAccountBalance(accountId);
