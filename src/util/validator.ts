@@ -1,11 +1,26 @@
+/*
+    All validators are in one class for ease of access and reusability.
+*/
+
+/**
+ * Checks to see if the id sent is valid: needs to be both truthy, an integer and a positive number.
+ * @param id {number} The ID to be checked if it is valid.
+ */
 export const isValidId = (id: number): boolean => {
     return (id && typeof id === 'number' && Number.isInteger(id) && id > 0);
 }
-
+/**
+ * Checks to see if object is empty
+ * @param obj {Object} object being checked
+ */
 export function isEmptyObject<T>(obj: T) {
     return obj && Object.keys(obj).length === 0;
 }
 
+/**
+ * Checks to see if the given param(s) are ALL of type string && truthy
+ * @param strs {...strs} strings being checked
+ */
 export const isValidStrings = (...strs: string[]): boolean => {
    
     for (let str of strs) {
@@ -18,6 +33,11 @@ export const isValidStrings = (...strs: string[]): boolean => {
 
 }
 
+/**
+ * Will check to see if the given object is valid -- every key is truthy
+ * @param obj {Object} the object being checked
+ * @param nullableProps {...string} values you want this function to ignore
+ */
 export const isValidObject = (obj: Object, ...nullableProps: string[]) => {
     
     return obj && Object.keys(obj).every(key => {
@@ -27,6 +47,11 @@ export const isValidObject = (obj: Object, ...nullableProps: string[]) => {
 
 }
 
+/**
+ * Checks to see if property is a part of the keys in the object type you send.
+ * @param prop {string} Property you want to check
+ * @param type {any} Object type you want to check
+ */
 export const isPropertyOf = (prop: string, type: any) => {
 
     if (!prop || !type) {
