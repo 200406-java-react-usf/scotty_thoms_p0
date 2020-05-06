@@ -6,6 +6,10 @@ export const TransactionRouter = express.Router();
 
 const transactionService = AppConfig.transactionService;
 
+/**
+ * Used to get all transactions
+ * Admin role required.
+ */
 TransactionRouter.get('/', adminGuard, async (req, resp) => {
     try{
         let payload = await transactionService.getAllTransactions();
@@ -15,6 +19,9 @@ TransactionRouter.get('/', adminGuard, async (req, resp) => {
     }
 });
 
+/**
+ * Used to get transaction by id
+ */
 TransactionRouter.get('/:id', async (req, resp) => {
     const id = +req.params.id; 
     try { 
@@ -25,6 +32,9 @@ TransactionRouter.get('/:id', async (req, resp) => {
     }
 });
 
+/**
+ * Used to create a new transaction
+ */
 TransactionRouter.post('', async (req, resp) => {
     try {
         let newTransaction = await transactionService.addNewTransaction(req.body);
