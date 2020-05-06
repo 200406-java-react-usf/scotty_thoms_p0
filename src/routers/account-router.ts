@@ -6,6 +6,10 @@ export const AccountRouter = express.Router();
 
 const accountService = AppConfig.accountService;
 
+/**
+ * Used to get all accounts in database. 
+ * Need Admin access.
+ */
 AccountRouter.get('', adminGuard, async (req, resp) => {
     try{
         let payload = await accountService.getAllAccounts();
@@ -15,6 +19,9 @@ AccountRouter.get('', adminGuard, async (req, resp) => {
     }
 });
 
+/**
+ * Used to get account by specific id
+ */
 AccountRouter.get('/:id', async (req, resp) => {
     const id = +req.params.id; //the plus sign is to type coerce id into a number
     try { 
@@ -25,6 +32,9 @@ AccountRouter.get('/:id', async (req, resp) => {
     }
 })
 
+/**
+ * Used to create a new account
+ */
 AccountRouter.post('', async (req, resp) => {
     try {
         let newAccount = await accountService.addNewAccount(req.body);
@@ -34,6 +44,9 @@ AccountRouter.post('', async (req, resp) => {
     }
 })
 
+/**
+ * Used to update account that already exists in database
+ */
 AccountRouter.put('', async (req,resp) => {
     try {
         let updatedAccount = await accountService.updateAccount(req.body);
@@ -43,6 +56,9 @@ AccountRouter.put('', async (req,resp) => {
     }
 })
 
+/**
+ * Used to delete an account in the database
+ */
 AccountRouter.delete('', adminGuard, async (req, resp) => {
     try {
         let accountToBeDeleted = await accountService.deleteAccount(req.body);
