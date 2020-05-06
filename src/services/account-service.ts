@@ -9,6 +9,10 @@ export class AccountService {
         
     }
 
+    /**
+     * Used to get all accounts
+     * Admin role required
+     */
     async getAllAccounts(): Promise<Account[]> {
         try {
             let accounts = await this.accountRepo.getAll();
@@ -22,6 +26,10 @@ export class AccountService {
         }
     }
     
+    /**
+     * Used to get account with provided id
+     * @param id {number} id of account
+     */
     async getAccountById(id: number): Promise<Account> {
         try {
             if (!isValidId(id)) {
@@ -37,6 +45,10 @@ export class AccountService {
         }
     }
 
+    /**
+     * Creates a new account with information provided.
+     * @param newAccount {Account} new account you want created
+     */
     async addNewAccount(newAccount: Account): Promise<Account> {
 
         if (!isValidObject(newAccount)) {
@@ -54,6 +66,10 @@ export class AccountService {
         return persistedAccount;
     }
 
+    /**
+     * Will udpate an account that already exists
+     * @param updatedAccount {Account} account you want updated
+     */
     async updateAccount(updatedAccount: Account): Promise<boolean> {
 
         if (!isValidObject(updatedAccount)) {
@@ -68,6 +84,10 @@ export class AccountService {
         return true;
     }
 
+    /**
+     * Deletes a specified account
+     * @param accountToBeDeleted {Account} account you want to delete
+     */
     async deleteAccount(accountToBeDeleted: Account): Promise<boolean> {
 
         if (!isValidObject(accountToBeDeleted)) {
@@ -82,6 +102,10 @@ export class AccountService {
         return true;
     }
 
+    /**
+     * Will search account table for given queryObj you send as param
+     * @param queryObj {any} the unique key you want to check for
+     */
     async getAccountByUniqueKey(queryObj: any): Promise<Account> {
 
         try {
@@ -121,6 +145,10 @@ export class AccountService {
         }
     }
 
+    /**
+     * Will check to see if the user actually exists in the database
+     * @param ownerId {number} id of user
+     */
     async checkOwnerExists(ownerId: number): Promise<boolean> {
         
         let result = await this.accountRepo.checkOwnerExists(ownerId);
