@@ -3,7 +3,7 @@ import { CrudRepository } from './crud-repo';
 import {
     InternalServerError
 } from '../errors/errors';
-import { PoolClient } from 'pg';
+import { PoolClient, Pool } from 'pg';
 import { connectionPool } from '..';
 import { mapTransactionResultSet } from '../util/result-set-mapper';
 
@@ -91,6 +91,39 @@ export class TransactionRepository implements CrudRepository<Transaction> {
             let sql = `${this.baseQuery} where t.${key} = $1`;
             let rs = await client.query(sql, [val]);
             return mapTransactionResultSet(rs.rows[0]);
+        } catch (e) {
+            throw new InternalServerError();
+        } finally {
+            client && client.release();
+        }
+    }
+
+    async checkAccountExists(accountId: number): Promise<Transaction> {
+        let client: PoolClient;
+
+        try {
+            client = await connectionPool.connect();
+            let sql = `
+                select * from accounts where id = $1
+            `
+            let rs = await client.query(sql, [accountId]);
+            return mapTransactionResultSet(rs.rows[0]);
+        } catch (e) {
+            throw new InternalServerError();
+        } finally {
+            client && client.release();
+        }
+    }
+
+    async getAccountBalance(accountId: number): Promise<number> {
+        let client: PoolClient;
+        try {
+            client = await connectionPool.connect();
+            let sql = `
+                select balance from accounts where id = $1
+            `;
+            let rs = await client.query(sql, [accountId]);
+            return (rs.rows[0].balance);
         } catch (e) {
             throw new InternalServerError();
         } finally {
