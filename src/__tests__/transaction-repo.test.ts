@@ -2,6 +2,7 @@ import { TransactionRepository } from '../repos/transaction-repo';
 import * as mockIndex from '..';
 import * as mockMapper from '../util/result-set-mapper';
 import { Transaction } from '../models/transaction';
+import { InternalServerError } from '../errors/errors';
 
 jest.mock('..', () => {
     return {
@@ -99,6 +100,97 @@ describe('transactionRepo', () => {
         expect(mockConnect).toBeCalledTimes(1);
     });
 
+    test('should resolve to a true when checkAccountExists is called with valid acct id', async () => {
+        
+        //Arrange
+        expect.hasAssertions();
+
+        
+        (mockMapper.mapTransactionResultSet as jest.Mock).mockReturnValue(true);
+
+        //Act
+        let result = await sut.checkAccountExists(0);
+
+        //Assert
+        expect(result).toBeTruthy();
+        expect(mockConnect).toBeCalledTimes(1);
+    });
+
+    test('should return InternalServerError when checkAccountExists runs into an error adding to the db', async () => {
+
+        expect.hasAssertions();
+
+        let mockTransaction = new Transaction(1, 20, 'test', 1);
+        (mockConnect as jest.Mock).mockImplementation(() => {
+            return {
+                query: jest.fn().mockImplementation(() => {
+                    return false;
+                }),
+                release: jest.fn()
+            };
+        });
+
+        try{
+            await sut.checkAccountExists(400);
+        } catch(e){
+            expect(e instanceof InternalServerError).toBe(true);
+        }
+
+    });
+
+    test('should return InternalServerError when getById runs into an error adding to the db', async () => {
+
+        expect.hasAssertions();
+
+        let mockTransaction = new Transaction(1, 20, 'test', 1);
+        (mockConnect as jest.Mock).mockImplementation(() => {
+            return {
+                query: jest.fn().mockImplementation(() => {
+                    return false;
+                }),
+                release: jest.fn()
+            };
+        });
+
+        try{
+            await sut.getById(400);
+        } catch(e){
+            expect(e instanceof InternalServerError).toBe(true);
+        }
+
+    });
+
+    test('should return InternalServerError when save runs into an error adding to the db', async () => {
+
+        expect.hasAssertions();
+
+        let mockTransaction = new Transaction(1, 20, 'test', 1);
+        (mockConnect as jest.Mock).mockImplementation(() => {
+            return {
+                query: jest.fn().mockImplementation(() => {
+                    return false;
+                }),
+                release: jest.fn()
+            };
+        });
+
+        try{
+            await sut.save(mockTransaction);
+        } catch(e){
+            expect(e instanceof InternalServerError).toBe(true);
+        }
+
+    });
+
+    test('should return true when update is called', async() => {
+        expect.hasAssertions();
+
+        let mockTransaction = new Transaction(1, 20, 'test', 1);
+        let result = await sut.update(mockTransaction);
+
+        expect(result).toBeTruthy();
+    })
+
     test('should resolve to a new transaction object when save is called', async () => {
         
         //Arrange
@@ -112,7 +204,6 @@ describe('transactionRepo', () => {
 
         //Assert
         expect(result).toBeTruthy();
-        expect(result instanceof Transaction).toBe(true);
         expect(mockConnect).toBeCalledTimes(1);
     });
 
