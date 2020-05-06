@@ -86,17 +86,7 @@ export class TransactionRepository implements CrudRepository<Transaction> {
      */
     async update(updatedTransaction: Transaction): Promise<boolean> {
         // WIP - Transactions are not allowed to be updated yet.
-        let client: PoolClient;
-        try {
-            client = await connectionPool.connect();
-            let sql = `${this.baseQuery}`;
-            let rs = await client.query(sql);
-            return true;
-        } catch (e) {
-            throw new InternalServerError();
-        } finally {
-            client && client.release();
-        }
+        return true;
     }
 
     // /**
