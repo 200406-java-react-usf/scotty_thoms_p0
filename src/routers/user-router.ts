@@ -6,7 +6,10 @@ export const UserRouter = express.Router();
 
 const userService = AppConfig.userService;
 
-
+/**
+ * Used to get all users in database
+ * Admin role required.
+ */
 UserRouter.get('', adminGuard, async (req, resp) => {
     try{
 
@@ -17,6 +20,9 @@ UserRouter.get('', adminGuard, async (req, resp) => {
     }
 });
 
+/**
+ * Used to get user with specific id
+ */
 UserRouter.get('/:id', async (req, resp) => {
     const id = +req.params.id; //the plus sign is to type coerce id into a number
     try { 
@@ -27,6 +33,9 @@ UserRouter.get('/:id', async (req, resp) => {
     }
 });
 
+/**
+ * used to add a new user
+ */
 UserRouter.post('', async (req, resp) => {
     
     try {
@@ -37,6 +46,9 @@ UserRouter.post('', async (req, resp) => {
     }
 });
 
+/**
+ * used to update a user that already exists in database
+ */
 UserRouter.put('', async (req,resp) => {
     try {
         let updatedUser = await userService.updateUser(req.body);
@@ -46,6 +58,10 @@ UserRouter.put('', async (req,resp) => {
     }
 });
 
+/**
+ * used to delte user
+ * Admin role required.
+ */
 UserRouter.delete('', adminGuard, async (req,resp) => {
     try {
         let userToBeDeleted = await userService.deleteUser(req.body);
