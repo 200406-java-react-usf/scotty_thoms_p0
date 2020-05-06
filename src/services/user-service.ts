@@ -8,6 +8,10 @@ export class UserService {
         this.userRepo = userRepo;
     }
 
+    /**
+     * Gets all users
+     * Admin role required.
+     */
     async getAllUsers(): Promise<User[]> {
         try {
             let users = await this.userRepo.getAll();
@@ -22,6 +26,11 @@ export class UserService {
         }
     }
 
+    /**
+     * Will "login" user if given correct username and password that exists in the database.
+     * @param un {string} username
+     * @param pw {string} password
+     */
     async authenticateUser(un: string, pw: string): Promise<User> {
         try {
             if (!isValidStrings(un,pw)) {
@@ -40,6 +49,10 @@ export class UserService {
         }
     }
 
+    /**
+     * Will get user with given id
+     * @param id {number} user id
+     */
     async getUserById(id: number): Promise<User> {
         try {
             if(!isValidId(id)) {
@@ -58,6 +71,10 @@ export class UserService {
         }
     }
 
+    /**
+     * Will add a new user to database
+     * @param newUser {User} user to add
+     */
     async addNewUser(newUser: User): Promise<User> {
 
         if (!isValidObject(newUser)) {
@@ -78,6 +95,10 @@ export class UserService {
         
     }
 
+    /**
+     * Will update user that already exists in database
+     * @param updatedUser {User} user to update
+     */
     async updateUser(updatedUser: User): Promise<boolean> {
 
 
@@ -103,6 +124,10 @@ export class UserService {
         return true;
     }
 
+    /**
+     * Will delete user in database
+     * @param userToBeDeleted {User} user to be deleted
+     */
     async deleteUser(userToBeDeleted: User): Promise<boolean> {
         
         if (!isValidObject(userToBeDeleted)) {
@@ -118,6 +143,10 @@ export class UserService {
 
     }
 
+    /**
+     * Will get user by a unique key that you provide.
+     * @param queryObj {any}
+     */
     async getUserByUniqueKey(queryObj: any): Promise<User> {
         //WIP - not implemented
         try {
@@ -155,6 +184,10 @@ export class UserService {
         }
     }
 
+    /**
+     * Will check to see if the username already exists in the database
+     * @param username {string} username
+     */
     async checkUsername(username: string): Promise<boolean> {
         
         try {
@@ -169,7 +202,10 @@ export class UserService {
       }
 
     
-
+    /**
+     * Will remove the password before printing for security reasons.
+     * @param user {User} user
+     */
     private removePassword(user: User): User {
         if(!user || !user.password) return user;
         delete user.password;
