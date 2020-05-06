@@ -1,7 +1,7 @@
 import { TransactionRepository } from "../repos/transaction-repo";
-import { ResourceNotFoundError, BadRequestError, ResourcePersistenceError } from "../errors/errors";
+import { ResourceNotFoundError, BadRequestError, ResourcePersistenceError, InsuficentFundsError } from "../errors/errors";
 import { Transaction } from "../models/transaction";
-import { isValidId, isEmptyObject, isValidObject, isPropertyOf, isValidStrings } from "../util/validator";
+import { isValidId, isEmptyObject, isValidObject, isPropertyOf } from "../util/validator";
 
 export class TransactionService {
     constructor (private transactionRepo: TransactionRepository) {
@@ -52,6 +52,16 @@ export class TransactionService {
             throw new ResourcePersistenceError('No account exists with provided accountId.');
         }
 
+        let accountBalance = await this.checkAccountBalance(newTransaction.accountId);
+
+        let balanceAfterTransaction = accountBalance + newTransaction.amount;
+
+        if (balanceAfterTransaction < 0) {
+            throw new InsuficentFundsError();
+        }
+
+        
+
         const persistedTransaction = await this.transactionRepo.save(newTransaction);
 
         return persistedTransaction;
@@ -99,14 +109,24 @@ export class TransactionService {
     }
     
     async checkAccountExists(accountId: number): Promise<boolean> {
-        try {
-            await this.getTransactionByUniqueKey({'accountId': accountId});
-        } catch (e) {
+        let result = await this.transactionRepo.checkAccountExists(accountId);
+        if (isEmptyObject(result)) {
             console.log(`No account found with id ${accountId}. Try again.`);
             return false;
+        } else {
+            console.log(`Account exists with id ${accountId}. Proceed.`);
+            return true;
+        }
+    }
+
+    async checkAccountBalance(accountId: number): Promise<number> {
+        try {
+            let balance = await this.transactionRepo.getAccountBalance(accountId);
+            return balance;
+        } catch (e) {
+            console.log(`Something went wrong...`);
+            throw e;
         }
 
-        console.log(`Account exists with id ${accountId}. Proceed`);
-        return true;
     }
 }
