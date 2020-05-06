@@ -6,12 +6,17 @@ export const AuthRouter = express.Router();
 
 const userService = AppConfig.userService;
 
+/**
+ * Used to "logout"
+ */
 AuthRouter.get('', async (req,resp) => {
     delete req.session.principal;
     resp.status(204).send();
 })
 
-
+/**
+ * Used to login and check to see if user is "Admin"
+ */
 AuthRouter.post('', async (req, resp) => {
     try {
         const { username, password } = req.body;
