@@ -131,7 +131,7 @@ export class AccountRepository implements CrudRepository<Account> {
     }
 
     /**
-     * Will check the users table in database for key and value you send as params
+     * Will check the accounts table in database for key and value you send as params
      * @param key {string} key in database
      * @param val {string} value in database
      */
