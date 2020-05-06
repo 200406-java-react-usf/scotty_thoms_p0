@@ -20,6 +20,10 @@ export class UserRepository implements CrudRepository<User> {
     on u.role_id = ur.id
     `;
     
+    /**
+     * Gets all Users from database.
+     * Need admin access.
+     */
     async getAll(): Promise<User[]> {
 
             let client: PoolClient;
@@ -36,6 +40,10 @@ export class UserRepository implements CrudRepository<User> {
            
         };
 
+    /**
+     * Gets a single User with id you send as param if it exists
+     * @param id {nubmer} user id
+     */
     async getById(id: number): Promise<User> {
         
         let client: PoolClient;
@@ -52,6 +60,11 @@ export class UserRepository implements CrudRepository<User> {
 
     }
 
+    /**
+     * Used to login user. Will return User if username and password exist and are correct
+     * @param un {string} username of user
+     * @param pw {string} password of user
+     */
     async getbyCredentials(un: string, pw: string) {
         let client: PoolClient;
 
@@ -67,6 +80,10 @@ export class UserRepository implements CrudRepository<User> {
         }
     }
 
+    /**
+     * Creates a new user with information provided
+     * @param newUser {User} new user you want to create
+     */
     async save(newUser: User): Promise<User> {
         let client: PoolClient;
         
@@ -94,6 +111,11 @@ export class UserRepository implements CrudRepository<User> {
 
     }
 
+    /**
+     * Updates a user that you send in as param
+     * Can only update username, password, first name, and last name (for now)
+     * @param updatedUser {User} user you want updated
+     */
     async update(updatedUser: User): Promise<boolean> {
         let client: PoolClient;
             try { 
@@ -118,6 +140,11 @@ export class UserRepository implements CrudRepository<User> {
             }
     }
 
+    /**
+     * Deletes a user that you send in as a param
+     * Need admin access. Only need user ID to delete.
+     * @param userToDelete {User} user to delete
+     */
     async delete(userToDelete: User): Promise<boolean> {
         let client: PoolClient;
             try { 
@@ -136,6 +163,11 @@ export class UserRepository implements CrudRepository<User> {
             }
     }
 
+    /**
+     * Will check the users table in database for key and value you send as params
+     * @param key {string} key in database
+     * @param val {string} value in database
+     */
     async getUserByUniqueKey(key: string, val: string): Promise<User> {
 
         let client: PoolClient;
@@ -153,6 +185,10 @@ export class UserRepository implements CrudRepository<User> {
     
     }
 
+    /**
+     * Checks to see if the username exists in the database. 
+     * @param username {string} username of user
+     */
     async checkUsername(username: string): Promise<User> {
         let client: PoolClient;
 
