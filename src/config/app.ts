@@ -1,3 +1,9 @@
+/**
+ *  This file is used to make sure only one instace of each service and repo get created.
+ *  This replaced the singleton implementation I had before.
+ * 
+ */
+
 import { UserRepository } from "../repos/user-repo";
 import { UserService } from "../services/user-service";
 import { AccountRepository } from "../repos/account-repo";
